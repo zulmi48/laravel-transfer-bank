@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\TransferController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -15,5 +16,5 @@ Route::middleware(['auth:api'])->group(function () {
     Route::get('/user/profile', function () {
         return response()->json(['message' => 'This is a protected route.']);
     });
-    // Route::post('/transfer', [TransferController::class, 'createTransfer']);
+    Route::post('/transfer', [TransferController::class, 'createTransfer']);
 });
