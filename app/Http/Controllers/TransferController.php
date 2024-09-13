@@ -17,10 +17,10 @@ class TransferController extends Controller
         // 1. Validasi Input
         $validator = Validator::make($request->all(), [
             'nilai_transfer' => 'required|numeric|min:10000', // Nilai minimal transfer
-            'bank_tujuan' => 'required|string|exists:banks,kode_bank', // Kode bank harus ada di tabel bank
+            'bank_tujuan' => 'required|string|exists:banks,kode_bank|uppercase', // Kode bank harus ada di tabel bank
             'rekening_tujuan' => 'required|string',
             'atasnama_tujuan' => 'required|string',
-            'bank_pengirim' => 'required|string|exists:banks,kode_bank',
+            'bank_pengirim' => 'required|string|exists:banks,kode_bank|uppercase', // Kode bank harus ada di tabel bank
         ]);
 
         if ($validator->fails()) {
@@ -35,8 +35,6 @@ class TransferController extends Controller
         $bankPengirim = Bank::where('kode_bank', $request->bank_pengirim)->first();
 
         // 4. Ambil rekening admin perantara
-        // Logika: Jika bank pengirim dan tujuan berbeda, gunakan bank perantara, misal PT BosCOD Indonesia
-        // Untuk saat ini kita ambil rekening admin BNI sebagai contoh
         $rekeningPerantara = RekeningAdmin::where('bank_id', $bankPengirim->id)->first();
 
         // 5. Generasi Kode Unik (3 digit)
